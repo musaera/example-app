@@ -53,6 +53,6 @@ class KategoriController extends Controller
     public function destroy($id)
     {
         Kategori::findOrFail($id)->delete();
-        return redirect("/kategori")->with("Berhasil Menghapus Data Kategori");
+        return redirect("/kategori")->with("success", "Berhasil Menghapus Data Kategori");
     }
 }

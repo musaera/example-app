@@ -23,7 +23,7 @@
         @endsession
         <div class="col-12">
             <div class="mb-4">
-                <a href="{{ route('kategori.create') }}" class="btn btn-primary">Tambah</a>
+                <a href="{{ route('siswa.create') }}" class="btn btn-primary">Tambah</a>
             </div>
             <div class="card">
                 <div class="table-responsive">
@@ -31,7 +31,9 @@
                         <thead>
                             <tr>
                                 <th class="w-4">Id</th>
-                                <th>Kategori</th>
+                                <th>Siswa</th>
+                                <th>Kelas</th>
+                                <th>Domisili</th>
                                 <th class="w-1">Action</th>
                             </tr>
                         </thead>
@@ -39,13 +41,19 @@
                             @php
                                 $i = 1;
                             @endphp
-                            @forelse ($kategori as $item)
+                            @forelse ($siswa as $item)
                                 <tr>
                                     <td>
                                         {{ $i++ }}
                                     </td>
                                     <td>
-                                        {{ $item->nama_kategori }}
+                                        {{ $item->nama_siswa }}
+                                    </td>
+                                    <td>
+                                        {{ $item->kelas_siswa }}
+                                    </td>
+                                    <td>
+                                        {{ $item->domisili_siswa }}
                                     </td>
                                     <td>
                                         <div class="btn-list flex-nowrap">
@@ -55,14 +63,14 @@
                                                     Actions
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="{{ route('kategori.edit', $item->id) }}">
+                                                    <a class="dropdown-item" href="{{ route('siswa.edit', $item->id) }}">
                                                         edit
                                                     </a>
-                                                    <form action="{{ route('kategori.delete', $item->id) }}" method="POST">
+                                                    <form action="{{ route('siswa.delete', $item->id) }}" method="POST">
                                                         @csrf
                                                         @method('delete')
                                                         <button type="submit"
-                                                            onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Kategori Ini?')"
+                                                            onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data Siswa Ini?')"
                                                             class="dropdown-item">
                                                             Delete
                                                         </button>
