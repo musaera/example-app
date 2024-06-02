@@ -13,6 +13,7 @@ class SiswaController extends Controller
         $siswa = Siswa::get();
         return view("admin.siswa.siswa", compact("siswa"));
     }
+
     public function create()
     {
         return view("admin.siswa.create");

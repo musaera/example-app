@@ -13,15 +13,21 @@
                     <div class="mb-3">
                         <label class="form-label">Nama Siswa</label>
                         <input type="text" name="nama_siswa" class="form-control" autofocus autocomplete="off"
-                            value="{{old('nama_siswa')}}">
+                            value="{{ old('nama_siswa') }}">
                         @error('nama_siswa')
                             <div class="text-danger mt-2">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Kelas Siswa</label>
-                        <input type="text" name="kelas_siswa" class="form-control" autofocus autocomplete="off"
-                            value="{{old('kelas_siswa')}}">
+                        <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+                            name="kelas_siswa" class="form-control" autofocus autocomplete="off">
+                            <option selected="" value="">Pilih Kelas</option>
+                            <option value="10" @if (old('kelas_siswa') == 10) selected @endif>10</option>
+                            <option value="11" @if (old('kelas_siswa') == 11) selected @endif>11</option>
+                            <option value="12" @if (old('kelas_siswa') == 12) selected @endif>12</option>
+                            <option value="13" @if (old('kelas_siswa') == 13) selected @endif>13</option>
+                        </select>
                         @error('kelas_siswa')
                             <div class="text-danger mt-2">{{ $message }}</div>
                         @enderror
@@ -29,7 +35,7 @@
                     <div class="mb-3">
                         <label class="form-label">Domisili Siswa</label>
                         <input type="text" name="domisili_siswa" class="form-control" autofocus autocomplete="off"
-                            value="{{old('domisili_siswa')}}">
+                            value="{{ old('domisili_siswa') }}">
                         @error('domisili_siswa')
                             <div class="text-danger mt-2">{{ $message }}</div>
                         @enderror

@@ -23,7 +23,7 @@
         @endsession
         <div class="col-12">
             <div class="mb-4">
-                <a href="{{ route('siswa.create') }}" class="btn btn-primary">Tambah</a>
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-add">Tambah</a>
             </div>
             <div class="card">
                 <div class="table-responsive">
@@ -93,4 +93,68 @@
             </div>
         </div>
     </div>
+
+    {{-- Add Modal --}}
+    <form action="{{ route('siswa.perform') }}" method="post">
+        @csrf
+        @method('POST')
+        <div class="modal modal-blur" id="modal-add" tabindex="-1" role="dialog" aria-modal="false">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add New Siswa</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Nama Siswa</label>
+                            <input type="text" name="nama_siswa" class="form-control" autofocus autocomplete="off"
+                                value="{{ old('nama_siswa') }}">
+                            @error('nama_siswa')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kelas Siswa</label>
+                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+                                name="kelas_siswa" class="form-control" autofocus autocomplete="off">
+                                <option selected="" value="">Pilih Kelas</option>
+                                <option value="10" @if (old('kelas_siswa') == 10) selected @endif>10</option>
+                                <option value="11" @if (old('kelas_siswa') == 11) selected @endif>11</option>
+                                <option value="12" @if (old('kelas_siswa') == 12) selected @endif>12</option>
+                                <option value="13" @if (old('kelas_siswa') == 13) selected @endif>13</option>
+                            </select>
+                            @error('kelas_siswa')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Domisili Siswa</label>
+                            <input type="text" name="domisili_siswa" class="form-control" autofocus autocomplete="off"
+                                value="{{ old('domisili_siswa') }}">
+                            @error('domisili_siswa')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                            Cancel
+                        </a>
+                        <button class="btn btn-primary" type="submit" data-bs-dismiss="modal">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M12 5l0 14"></path>
+                                <path d="M5 12l14 0"></path>
+                            </svg>
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 @endsection
