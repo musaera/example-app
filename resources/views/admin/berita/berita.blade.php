@@ -31,9 +31,9 @@
                         <thead>
                             <tr>
                                 <th class="w-4">Id</th>
-                                <th>Siswa</th>
-                                <th>Kelas</th>
-                                <th>Domisili</th>
+                                <th>Judul</th>
+                                <th>Kategori</th>
+                                <th>Deskripsi</th>
                                 <th class="w-1">Action</th>
                             </tr>
                         </thead>
@@ -41,20 +41,14 @@
                             @php
                                 $i = 1;
                             @endphp
-                            @forelse ($siswa as $item)
+                            @forelse ($berita as $item)
                                 <tr>
                                     <td>
                                         {{ $i++ }}
                                     </td>
-                                    <td>
-                                        {{ $item->nama_siswa }}
-                                    </td>
-                                    <td>
-                                        {{ $item->kelas_siswa }}
-                                    </td>
-                                    <td>
-                                        {{ $item->domisili_siswa }}
-                                    </td>
+                                    <td>{{ Str::limit($item->judul_berita, 10, '...')  }}</td>
+                                    <td>{{ $item->kategori->nama_kategori }}</td>
+                                    <td>{{  Str::limit($item->isi_berita, 20, '...') }}</td>
                                     <td>
                                         <div class="btn-list flex-nowrap">
                                             <div class="dropdown">
@@ -63,15 +57,15 @@
                                                     Actions
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="{{ route('siswa.edit', $item->id) }}"
+                                                    <a class="dropdown-item" href="{{ route('berita.edit', $item->id) }}"
                                                         data-bs-toggle="modal" data-bs-target="#modal-update">
                                                         edit
                                                     </a>
-                                                    <form action="{{ route('siswa.delete', $item->id) }}" method="POST">
+                                                    <form action="{{ route('berita.delete', $item->id) }}" method="POST">
                                                         @csrf
                                                         @method('delete')
                                                         <button type="submit"
-                                                            onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data Siswa Ini?')"
+                                                            onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Berita Ini?')"
                                                             class="dropdown-item">
                                                             Delete
                                                         </button>
@@ -96,44 +90,44 @@
     </div>
 
     {{-- Add Modal --}}
-    <form action="{{ route('siswa.perform') }}" method="post">
+    <form action="{{ route('berita.perform') }}" method="post">
         @csrf
         @method('POST')
         <div class="modal modal-blur" id="modal-add" tabindex="-1" role="dialog" aria-modal="false">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Add New Siswa</h5>
+                        <h5 class="modal-title">Add New Berita</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label class="form-label">Nama Siswa</label>
-                            <input type="text" name="nama_siswa" class="form-control" autofocus autocomplete="off"
-                                value="{{ old('nama_siswa') }}">
-                            @error('nama_siswa')
+                            <label class="form-label">Judul</label>
+                            <input type="text" name="judul_berita" class="form-control" autofocus autocomplete="off"
+                                value="{{ old('judul_berita') }}">
+                            @error('judul_berita')
                                 <div class="text-danger mt-2">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Kelas Siswa</label>
-                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
-                                name="kelas_siswa" class="form-control" autofocus autocomplete="off">
-                                <option selected="" value="">Pilih Kelas</option>
-                                <option value="10" @if (old('kelas_siswa') == 10) selected @endif>10</option>
-                                <option value="11" @if (old('kelas_siswa') == 11) selected @endif>11</option>
-                                <option value="12" @if (old('kelas_siswa') == 12) selected @endif>12</option>
-                                <option value="13" @if (old('kelas_siswa') == 13) selected @endif>13</option>
+                            <label class="form-label">Kategori</label>
+                            <select class="form-select" id="kategori" name="kategori_id" autofocus autocomplete="off">
+                                <option selected disabled>Pilih Kategori</option>
+                                @foreach ($kategori as $item)
+                                    <option value="{{ $item->id }}" @if (old('kategori_id') == $item->id) selected @endif>
+                                        {{ $item->nama_kategori }}</option>
+                                @endforeach
                             </select>
-                            @error('kelas_siswa')
+                            @error('kategori_id')
                                 <div class="text-danger mt-2">{{ $message }}</div>
                             @enderror
+
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Domisili Siswa</label>
-                            <input type="text" name="domisili_siswa" class="form-control" autofocus autocomplete="off"
-                                value="{{ old('domisili_siswa') }}">
-                            @error('domisili_siswa')
+                            <label class="form-label">Deskripsi</label>
+                            <input type="text" name="isi_berita" class="form-control" autofocus autocomplete="off"
+                                value="{{ old('isi_berita') }}">
+                            @error('isi_berita')
                                 <div class="text-danger mt-2">{{ $message }}</div>
                             @enderror
                         </div>
@@ -160,44 +154,46 @@
     </form>
 
     {{-- Edit Modal --}}
-    <form action="{{ route('siswa.update', $item->id) }}" method="post">
+    @foreach ($berita as $item)
+
+    <form action="{{ route('berita.update', $item->id) }}" method="post">
         @csrf
         @method('PUT')
         <div class="modal modal-blur" id="modal-update" tabindex="-1" role="dialog" aria-modal="false">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Update Data Siswa</h5>
+                        <h5 class="modal-title">Update Berita</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label class="form-label">Nama Siswa</label>
-                            <input type="text" name="nama_siswa" class="form-control" autofocus autocomplete="off"
-                                value="{{ $item->nama_siswa }}">
-                            @error('nama_siswa')
+                            <label class="form-label">Judul</label>
+                            <input type="text" name="judul_berita" class="form-control" autofocus autocomplete="off"
+                                value="{{ $item->judul_berita }}">
+                            @error('judul_berita')
                                 <div class="text-danger mt-2">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Kelas Siswa</label>
-                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
-                                name="kelas_siswa" class="form-control" autofocus autocomplete="off">
-                                <option selected="">Pilih Kelas</option>
-                                <option value="10" @if (old('kelas_siswa') == 10) selected @endif>10</option>
-                                <option value="11" @if (old('kelas_siswa') == 11) selected @endif>11</option>
-                                <option value="12" @if (old('kelas_siswa') == 12) selected @endif>12</option>
-                                <option value="13" @if (old('kelas_siswa') == 13) selected @endif>13</option>
+                            <label class="form-label">Kategori</label>
+                            <select class="form-select" id="kategori" name="kategori_id" autofocus autocomplete="off">
+                                <option selected disabled>Pilih Kategori</option>
+                                @foreach ($kategori as $itemk)
+                                    <option value="{{ $itemk->id }}" @if ($item->kategori_id == $itemk->id) selected @endif>
+                                        {{ $itemk->nama_kategori }}</option>
+                                @endforeach
                             </select>
-                            @error('kelas_siswa')
+                            @error('kategori_id')
                                 <div class="text-danger mt-2">{{ $message }}</div>
                             @enderror
+
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Domisili Siswa</label>
-                            <input type="text" name="domisili_siswa" class="form-control" autofocus
-                                autocomplete="off" value="{{ $item->domisili_siswa }}">
-                            @error('domisili_siswa')
+                            <label class="form-label">Deskripsi</label>
+                            <input type="text" name="isi_berita" class="form-control" autofocus autocomplete="off"
+                                value="{{ $item->isi_berita }}">
+                            @error('isi_berita')
                                 <div class="text-danger mt-2">{{ $message }}</div>
                             @enderror
                         </div>
@@ -222,4 +218,5 @@
             </div>
         </div>
     </form>
+    @endforeach
 @endsection

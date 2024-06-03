@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\BeritaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,4 +33,13 @@ Route::controller(SiswaController::class)->group(function () {
     Route::get('/siswa-edit/{id}', 'edit')->name('siswa.edit');
     Route::put('/siswa-update/{id}', 'update')->name('siswa.update');
     Route::delete('/siswa-delete/{id}', 'destroy')->name('siswa.delete');
+});
+
+Route::controller(BeritaController::class)->group(function () {
+    Route::get('/berita', 'index')->name('berita');
+    Route::get('/berita-create', 'create')->name('berita.create');
+    Route::post('/berita', 'store')->name('berita.perform');
+    Route::get('/berita-edit/{id}', 'edit')->name('berita.edit');
+    Route::put('/berita-update/{id}', 'update')->name('berita.update');
+    Route::delete('/berita-delete/{id}', 'destroy')->name('berita.delete');
 });
